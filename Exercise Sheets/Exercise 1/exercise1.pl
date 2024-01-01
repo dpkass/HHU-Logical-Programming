@@ -20,7 +20,26 @@ parent(gunter, pauline).
 parent(doerte, peter).
 parent(doerte, pauline).
 
-% TODO
+
+% ------------------ Task 2 ------------------
+% a ∨ (b ⇒ c)
+%
+% Since we have a disjunction, a must be false.
+% (b ⇒ c) is only false if b is true and c is false.
+%
+% Therefore a = c = 0, b = 1
+
+% ------------------ Task 3 ------------------
+% a)
+sheep(X) :- female(X); male(X).
+
+% b)
+father(F, C) :- parent(F, C), male(F).
+mother(M, C) :- parent(M, C), female(M).
+
+% c)
+ancestor(A, D) :- parent(A, D).
+ancestor(A, D) :- parent(P, D), ancestor(A, P).
 
 % Start Testcases: run_tests(sheep).
 
