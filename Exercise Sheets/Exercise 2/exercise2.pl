@@ -1,6 +1,48 @@
 :- use_module(library(plunit)).
 
-% task 2
+% ------------------ Task 2 ------------------
+% Implgunther, brunhildng facts iKrimhild
+
+% 1. Siegfried loves Krimhild and likes Gunther.
+loves(siegfried, krimhild).
+likes(siegfried, gunther).
+
+% 2. Krimhild loves Siegfried and hates Brunhild.
+loves(krimhild, siegfried).
+hates(krimhild, brunhild).
+
+% 3. Gunther loves Brunhild and likes Krimhild and Hagen.
+loves(gunther, brunhild).
+likes(gunther, krimhild).
+likes(gunther, hagen).
+
+% 4. Brunhild hates Siegfried, Gunther and Krimhild.
+hates(brunhild, siegfried).
+hates(brunhild, gunther).
+hates(brunhild, krimhild).
+
+% 5. Hagen hates Siegfried and everyone who loves Siegfried.
+hates(hagen, siegfried).
+hates(hagen, P) :- loves(P, siegfried).
+
+% 6. Brunhild likes everyone who hates Siegfried.
+likes(brunhild, P) :- hates(P, siegfried).
+
+% 7. Alberich hates everyone but himself.
+hates(alberich, P) :- P \= alberich.
+
+
+% Answer the following questions with Prolog queries
+
+% 1. Who does Brunhild like?
+likes(brunhild, X).
+
+% 2. Who hates Siegfried?
+hates(X, siegfried).
+
+% 3. Which couples could be formed? (persons who love each other)
+loves(A, B), loves(B, A), B \= A.
+
 
 % task 4
 
