@@ -93,9 +93,16 @@ del_element(E, [E|T], R) :- del_element(E, T, R).
 del_element(E, [H|T], [H|R]) :- H \= E, del_element(E, T, R).
 
 
-% task 5
+% ------------------ Task 5 ------------------
 
 % insert_at(+E, +L, +Index, -NL).
+% Implement a predicate insert_at/4 which inserts an element to a list at a given index. If the
+% index is larger than the size of the list, the element should be added to the end of the list.
+insert_at(E, L, 1, [E|L]).
+insert_at(E, [], Index, [E]) :- Index > 1.
+insert_at(E, [H|T], Index, [H|TNL]) :- Index > 1, NewIndex is Index - 1, insert_at(E, T, NewIndex,
+TNL).
+
 
 
 % Run all tests:
