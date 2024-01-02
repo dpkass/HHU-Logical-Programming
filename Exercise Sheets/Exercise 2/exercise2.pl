@@ -44,6 +44,21 @@ hates(X, siegfried).
 loves(A, B), loves(B, A), B \= A.
 
 
+
+% ------------------ Task 3 ------------------
+% Translate the following statements to First-Order Logic
+
+% 1. The following applies to all dogs: If they live in packs, then they can talk.
+% ∀x: dog(x) ∧ in_pack(x) --> talk(x)
+
+% 2. All huskies are dogs and live in packs.
+% ∀x: husky(x) --> dog(x) ∧ in_pack(x)
+
+% 3. Snowy is a husky.
+% husky(snowy)
+
+
+
 % task 4
 
 % last_but_one(+L, -E).
