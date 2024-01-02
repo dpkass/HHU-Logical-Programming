@@ -59,17 +59,39 @@ loves(A, B), loves(B, A), B \= A.
 
 
 
-% task 4
+% ------------------ Task 4 ------------------
+% For tasks b) to d), infix, suffix and prefix should be non-empty. Use append/3.
 
+% a)
 % last_but_one(+L, -E).
+% Return the last but one element of the list L in E.
+last_but_one([X, _], X).
+last_but_one([_|X], E) :- last_but_one(X, E).
 
+% b)
 % my_infix(+I, +L).
+% Test whether I is an infix of the list L.
+my_infix(I, L) :- my_prefix(I, L).
+my_infix(I, [_|L]) :- my_infix(I, L).
+% meaning prefix or prefix of suffix
 
+% c)
 % my_suffix(+I, +L).
+% Test whether S is a suffix of the list L.
+my_suffix(I, L) :- append(_, I, L), I \= [].
 
+% d)
 % my_prefix(+I, +L).
+% Test whether P is a prefix of the list L.
+my_prefix(I, L) :- append(I, _, L), I \= [].
 
+% e)
 % del_element(+E, +L, -R).
+% Delete all occurences of E in the list L and return the resulting list in R.
+del_element(_, [], []).
+del_element(E, [E|T], R) :- del_element(E, T, R).
+del_element(E, [H|T], [H|R]) :- H \= E, del_element(E, T, R).
+
 
 % task 5
 
