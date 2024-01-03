@@ -1,5 +1,20 @@
 :- use_module(library(plunit)).
 
+% ------------------ Task 2 ------------------
+% Let K := {{A,C},{¬C,B},{¬B,¬C,A}} be a set of clauses. Prove by contradiction and resolution
+% that the statement A holds.
+
+% {{A,C},{¬C,B},{¬B,¬C,A},{¬A}}
+% {A,C} ∧ {¬A} --> {C}
+% {{A,C},{¬C,B},{¬B,¬C,A},{¬A},{C}}
+% {¬B,¬C,A} ∧ {¬A} --> {¬B,¬C}
+% {{A,C},{¬C,B},{¬B,¬C,A},{¬A},{C},{¬B,¬C}}
+% {¬B,¬C} ∧ {C} --> {¬B}
+% {{A,C},{¬C,B},{¬B,¬C,A},{¬A},{C},{¬B,¬C},{¬B}}
+% {¬C,B} ∧ {¬B} --> {¬C}
+% {{A,C},{¬C,B},{¬B,¬C,A},{¬A},{C},{¬B,¬C},{¬B},{¬C}}
+% {C} ∧ {¬C} --> 0
+
 % task 3
 
 % task 4
