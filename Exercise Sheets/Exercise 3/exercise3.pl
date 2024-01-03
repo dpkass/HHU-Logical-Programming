@@ -12,7 +12,29 @@
 % ¬(a ∨ b) ∧ (b ∨ ¬a)
 % ¬a ∧ ¬b ∧ (b ∨ ¬a)
 
-% task 3
+
+
+% ------------------ Task 3 ------------------
+% Represent the automata shown as facts delta(-In, -Literal, -Out) in Prolog. For instance, delta
+% (1, d, 2). Implement a predicate accept(+L) which receives a list of atoms as argument and is
+% true if the automata accepts the word represented by the list.
+d(1, d, 2).
+d(2, a, 2).
+d(2, b, 2).
+d(2, c, 3).
+d(2, d, 4).
+d(2, e, 5).
+d(3, d, 6).
+d(6, c, 5).
+
+f(4).
+f(5).
+
+accept(L) :- accept(L, 1).
+
+accept([], S) :- f(S).
+accept([Eps|L], S) :- d(S, Eps, T), accept(L, T).
+
 
 % task 4
 
