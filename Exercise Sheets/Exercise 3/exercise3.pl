@@ -1,5 +1,17 @@
 :- use_module(library(plunit)).
 
+% ------------------ Task 2 ------------------
+% Simplify the following two propositional formulae by rewriting implications to disjunctions and
+% moving negations inwards to the literals.
+
+% 1. (a ⇒ (b ∧ ¬a)) ⇒ b
+% ¬(¬a ∨ (b ∧ ¬a)) ∨ b
+% (a ∧ (¬b ∨ a)) ∨ b
+
+% 2. (¬(a ∨ b)) ∧ (¬b ⇒ a)
+% ¬(a ∨ b) ∧ (b ∨ ¬a)
+% ¬a ∧ ¬b ∧ (b ∨ ¬a)
+
 % task 3
 
 % task 4
