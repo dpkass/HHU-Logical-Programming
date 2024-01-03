@@ -36,7 +36,17 @@ accept([], S) :- f(S).
 accept([Eps|L], S) :- d(S, Eps, T), accept(L, T).
 
 
-% task 4
+
+% ------------------ Task 4 ------------------
+is_true(cst(true)).
+is_true(not(F)) :- is_false(F).
+is_true(and(R, L)) :- is_true(R), is_true(L).
+is_true(or(R, L)) :- is_true(R); is_true(L).
+
+is_false(cst(false)).
+is_false(not(F)) :- is_true(F).
+is_false(and(R, L)) :- is_false(R); is_false(L).
+is_false(or(R, L)) :- is_false(R), is_false(L).
 
 
 :- begin_tests(automaton).
