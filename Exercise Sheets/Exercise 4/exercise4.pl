@@ -55,6 +55,28 @@ postorder(node(Value, Left, Right), L) :-
   append(LLeft, LRight, Temp),
   append(Temp, [Value], L).
 
+
+% ------------------ Task 5 ------------------
+% Briefly describe the semantics of the following Prolog predicate without implementing it. State
+% the result of L for the example call.
+% 1 t(L, NL) :-
+% 2   t(L, [], NL).
+% 3 t([], L, L).
+% 4 t([H|T], A, NL) :-
+% 5   t(T, [H|A], NL).
+
+% Example:
+% 1 ?- t([1,2,3,4], L).
+
+% The predicate t reverses the list and puts it into NL. This becomes appearent, as taking the
+% header in the left hand side side, and using it as the header on the temporary list A in the
+% right hand side leads to the list getting built from left to right.
+% Using the example, in the first call we take 1 and put it into A (= [1]). Then we take the 2
+% and put it in as the first element => A = [2, 1]... Finally we have the ampty list which leads
+% to NL being set to A which is [4, 3, 2, 1].
+
+
+
 % task 6
 
 :- begin_tests(compress).
