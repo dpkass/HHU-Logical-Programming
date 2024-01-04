@@ -15,7 +15,19 @@
 % {{A,C},{¬C,B},{¬B,¬C,A},{¬A},{C},{¬B,¬C},{¬B},{¬C}}
 % {C} ∧ {¬C} --> 0
 
-% task 3
+
+
+% ------------------ Task 3 ------------------
+% Implement a predicate compress(+L, -CL) which removes consecutive duplicates in a list. The
+% order of the elements in the list should not be changed.
+
+compress([], []).
+compress([H|L], [H|CL]) :- compress(L, H, CL).
+
+compress([], _, []).
+compress([C|L], P, CL) :- C == P, compress(L, C, CL).
+compress([C|L], P, [C|CL]) :- C \== P, compress(L, C, CL).
+
 
 % task 4
 
