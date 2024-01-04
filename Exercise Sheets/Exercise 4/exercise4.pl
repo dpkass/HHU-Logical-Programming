@@ -29,7 +29,31 @@ compress([C|L], P, CL) :- C == P, compress(L, C, CL).
 compress([C|L], P, [C|CL]) :- C \== P, compress(L, C, CL).
 
 
-% task 4
+
+% ------------------ Task 4 ------------------
+% Implement the following predicates processing binary trees:
+% • inorder(+Tree, -L) collects the elements of a binary tree in in-order.
+% • postorder(+Tree, -L) collects the elements of a binary tree in post-order.
+% • preorder(+Tree, -L) collects the elements of a binary tree in pre-order.
+
+inorder(nil, []).
+inorder(node(Value, Left, Right), L) :-
+  inorder(Left, LLeft),
+  inorder(Right, LRight),
+  append(LLeft, [Value|LRight], L).
+
+preorder(nil, []).
+preorder(node(Value, Left, Right), L) :-
+  preorder(Left, LLeft),
+  preorder(Right, LRight),
+  append([Value|LLeft], LRight, L).
+
+postorder(nil, []).
+postorder(node(Value, Left, Right), L) :-
+  postorder(Left, LLeft),
+  postorder(Right, LRight),
+  append(LLeft, LRight, Temp),
+  append(Temp, [Value], L).
 
 % task 6
 
