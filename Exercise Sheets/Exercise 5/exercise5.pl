@@ -1,5 +1,40 @@
 :- use_module(library(plunit)).
 
+% ------------------ Task 2 ------------------
+% Define the following statements in propositional logic:
+
+% 1. The system heats if the cover is closed and the power is on.
+% cover ∧ power --> system_heats
+
+% 2. If the lamp shines, the power is on.
+% lamp --> power
+
+% 3. The lamp shines.
+% lamp
+
+% 4. The cover is closed.
+% cover
+
+% cover ∧ power --> system_heats
+% => ¬(cover ∧ power) ∨ system_heats
+% => ¬cover ∨ ¬power ∨ system_heats
+% lamp --> power
+% => ¬lamp ∨ power
+
+% KNF: {{¬cover, ¬power, system_heats}, {¬lamp, power}, {lamp}, {cover}}
+% abbreviate and enumerate:
+% 1. {¬c, ¬p, s}
+% 2. {¬l, p}
+% 3. {l}
+% 4. {c}
+% 5. {¬s} (denied query)
+
+% 6 := 1 + 5 = {¬c, ¬p, s} + {¬s} ⊨ {¬c, ¬p}
+% 7 := 4 + 6 ⊨ {¬p}
+% 8 := 2 + 3 ⊨ {p}
+% 9 := 7 + 8 ⊨ {}
+
+
 
 :- begin_tests(prop_logic).
 
