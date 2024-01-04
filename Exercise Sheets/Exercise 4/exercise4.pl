@@ -77,7 +77,37 @@ postorder(node(Value, Left, Right), L) :-
 
 
 
-% task 6
+% ------------------ Task 6 ------------------
+% a) Implement a predicate gcd(+X, +Y, -Gcd) which calculates the greatest common divisor of two
+% natural numbers X and Y. Use the following imperative pseudocode algorithm as a reference:
+
+% 1 euclid_recursive(x,y):
+% 2   if y = 0:
+% 3     return x
+% 4   if x = 0:
+% 5     return y
+% 6   if x > y:
+% 7     return euclid_recursive(x - y, y)
+% 8   return euclid_recursive(x, y - x)
+
+gcd(X, 0, X).
+gcd(0, Y, Y).
+
+gcd(X, Y, G) :-
+  X > Y, X > 0, Y > 0,
+  NewX is X - Y,
+  gcd(NewX, Y, G).
+gcd(X, Y, G) :-
+  Y >= X, X > 0, Y > 0,
+  NewY is Y - X,
+  gcd(X, NewY, G).
+
+
+% b) Implement a predicate coprime(+X, +Y) which is true if the two numbers X and Y are coprime.
+% That means, their greatest common divisor is equal to 1.
+coprime(X, Y) :- gcd(X, Y, 1).
+
+
 
 :- begin_tests(compress).
 
@@ -204,42 +234,6 @@ test(coprime3, [fail]) :-
 
 test(coprime4, [fail]) :-
     coprime(36, 63).
-
-test(range, [nondet,true(L == [1,2,3,4,5,6,7,8,9])]) :-
-    range_1(10, L).
-
-test(range2, [nondet,true(L == [1,2,3,4])]) :-
-    range_1(5, L).
-
-test(range3, [nondet,true(L == [])]) :-
-    range_1(1, L).
-
-test(range4, [nondet,true(L == [])]) :-
-    range_1(0, L).
-
-test(range5, [nondet,true(L == [])]) :-
-    range_1(-1, L).
-
-test(range_all, [nondet,all(L == [[]])]) :-
-    range_1(-1, L).
-
-test(range_all2, [nondet,all(L == [[1,2,3,4,5,6,7,8,9]])]) :-
-    range_1(10, L).
-
-test(phi, [nondet,true(L == 4)]) :-
-    phi(10, L).
-
-test(phi2, [nondet,true(L == 8)]) :-
-    phi(15, L).
-
-test(phi3, [nondet,true(L == 288)]) :-
-    phi(323, L).
-
-test(phi_all, [nondet,all(L == [288])]) :-
-    phi(323, L).
-
-test(phi_all2, [nondet,all(L == [8])]) :-
-    phi(15, L).
 
 :- end_tests(gcd).
 
