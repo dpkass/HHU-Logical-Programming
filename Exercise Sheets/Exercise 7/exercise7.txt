@@ -7,3 +7,29 @@ Transform the following predicate to conjunctive normalform.
 ==> {{n ∉ N, f(n) ∈ N}, {n ∉ N, f(n) > n}}
 
 
+
+------------------ Task 3 ------------------
+Prove by contradiction that the following predicate is true:
+(∀x : (¬P(x) ⇒ Q(x)) ∧ ∃x : ¬Q(x)) ⇒ ∃x : P(x)
+Note that there are three different variables called x which are locally quantified.
+
+Hint: Negate the formula, transform the formula to CNF (including Skolemization), find a
+contradiction.
+
+Negate + CNF:
+¬((∀x : (¬P(x) ⇒ Q(x)) ∧ ∃x : ¬Q(x)) ⇒ ∃x : P(x)) | remove implications
+¬(¬(∀x : (P(x) ∨ Q(x)) ∧ ∃x : ¬Q(x)) ∨ ∃x : P(x)) | simplify negations
+(∀x : (P(x) ∨ Q(x)) ∧ ∃x : ¬Q(x)) ∧ ∀x : ¬P(x)    | rename variables
+(∀x : (P(x) ∨ Q(x)) ∧ ∃y : ¬Q(y)) ∧ ∀z : ¬P(z)    | skolem/drop quantifiers: sy := y
+((P(x) ∨ Q(x)) ∧ ¬Q(sy)) ∧ ¬P(z)
+
+false if x = z = sy
+((P(x) ∨ Q(x)) ∧ ¬P(x) ∧ ¬Q(x))
+
+| P(X) | Q(X) | f                 |
+| ---- | ---- | ----------------- |
+| 0    | 0    | ((0 ∨ 0) ∧ 1 ∧ 1) |
+| 0    | 1    | ((0 ∨ 1) ∧ 1 ∧ 0) |
+| 1    | 0    | ((1 ∨ 0) ∧ 0 ∧ 1) |
+| 1    | 1    | ((1 ∨ 1) ∧ 0 ∧ 0) |
+all equal 0
