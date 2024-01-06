@@ -36,6 +36,82 @@
 
 
 
+% ------------------ Task 3 ------------------
+% In this exercise we want to analyse and manipulate propositional formulae. We represent
+% propositional formulae as terms in Prolog while propositional statements are represented as
+% Prolog atoms. For instance, the propositional formula a ∧ b ∨ c is represented as the term
+% or(and(a, b), c) in Prolog. Implement the following predicates:
+
+% a) is_atomic_expr(+Term) is true iff Term is a propositional statement.
+is_atomic_expr(T) :- atom(T).
+
+% b) is_literal(+Term) is true iff Term is a literal (positive or negative propositional statement).
+is_literal(T) :- is_atomic_expr(T).
+is_literal(not(T)) :- is_atomic_expr(T).
+
+% c) simplify_expr(+Term, -Simplified) simplifies a given propositional formula by applying the
+% following rules:
+%   • Remove double negations: ¬¬A ≡ A
+%   • DeMorgan’s Laws
+%     (a) ¬(A ∧ B) ≡ ¬A ∨ ¬B
+%     (b) ¬(A ∨ B) ≡ ¬A ∧ ¬B
+
+simplify_expr(T, T) :- is_literal(T).
+
+simplify_expr(and(A, B), and(SA, SB)) :-
+  simplify_expr(A, SA),
+  simplify_expr(B, SB).
+simplify_expr(or(A, B), or(SA, SB)) :-
+  simplify_expr(A, SA),
+  simplify_expr(B, SB).
+
+simplify_expr(not(not(T)), S) :- simplify_expr(T, S).
+simplify_expr(not(and(A, B)), or(SA, SB)) :-
+  simplify_expr(not(A), SA),
+  simplify_expr(not(B), SB).
+simplify_expr(not(or(A, B)), and(SA, SB)) :-
+  simplify_expr(not(A), SA),
+  simplify_expr(not(B), SB).
+
+
+
+% d) is_clause(+Term) is true iff Term is a clause after simplification.
+is_clause(T) :-
+  simplify_expr(T, S),
+  is_disjunction(S).
+
+is_disjunction(T) :- is_literal(T).
+is_disjunction(or(A, B)) :-
+  is_disjunction(A),
+  is_disjunction(B).
+
+
+% e) is_horn_clause(+Term) is true iff Term is a horn-clause after simplification.
+is_horn_clause(T) :-
+  simplify_expr(T, S),
+  max_one_pos(S).
+
+max_one_pos(T) :- is_literal(T).
+max_one_pos(or(A, B)) :-
+  max_one_pos(A),
+  no_pos(B).
+max_one_pos(or(A, B)) :-
+  no_pos(A),
+  max_one_pos(B).
+
+no_pos(not(T)) :- is_atomic_expr(T).
+no_pos(or(A, B)) :-
+  no_pos(A),
+  no_pos(B).
+
+
+% f) is_denial(Term) is true iff Term is a denial after simplification.
+is_denial(T) :-
+  simplify_expr(T, S),
+  no_pos(T).
+
+
+
 :- begin_tests(prop_logic).
 
 test(is_atomic_expr,[nondet]) :-
