@@ -57,6 +57,22 @@
 
 
 
+% ------------------ Task 4 ------------------
+% Implement a predicate mypermutation(+L, -P) which calculates all permutations of a list L. It
+% should be possible to enumerate all permutations using backtracking.
+
+mypermutation([], []).
+mypermutation([H|L], P) :-
+  mypermutation(L, P2),
+  insert(P2, H, P).
+
+
+insert(L, E, P) :-
+  append(A, B, L),
+  append(A, [E|B], P).
+
+
+
 :- begin_tests(permutations).
 
 test(perm1) :-
