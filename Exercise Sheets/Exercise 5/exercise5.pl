@@ -112,6 +112,64 @@ is_denial(T) :-
 
 
 
+% ------------------ Task 4 ------------------
+% In the fourth exercise sheet, we implemented a predicate gcd(+X, +Y, -Gcd), which calculates
+% the greatest common divisor of two natural numbers X and Y, and coprime(+X, +Y), which is true if
+% the two numbers X and Y are coprime (their GCD is equal to 1). We provide implementations for
+% these two predicates in the Prolog file containing the unit tests for this exercise.
+
+% given:
+gcd(X, 0, X).
+gcd(0, Y, Y).
+
+gcd(X, Y, GCD) :-
+    X > 0,
+    Y > 0,
+    X > Y,
+    NewX is X-Y,
+    gcd(NewX, Y, GCD).
+
+gcd(X, Y, GCD) :-
+    X > 0,
+    Y > 0,
+    X =< Y,
+    NewY is Y-X,
+    gcd(X, NewY, GCD).
+
+coprime(X,Y) :-
+    gcd(X,Y,GCD),
+    GCD == 1.
+
+
+% a) Implement a predicate range_1(+M, -L) which computes a list of numbers within a given range.
+% A call to range_1(M, L) unifies L with a list of numbers n with 1 ≤ n < M.
+
+range_1(M, []) :- M =< 1.
+range_1(M, L) :-
+  M > 1,
+  N is M - 1,
+  range_1(N, R),
+  append(R, [N], L).
+
+
+% b) Implement a predicate phi(+M, -N) which counts all numbers n with 1 ≤ n < M which are
+% coprime to M.
+
+phi(M, N) :-
+  range_1(M, L),
+  phi(M, L, N).
+
+phi(M, [], 0).
+phi(M, [H|L], N) :-
+  coprime(M, H),
+  phi(M, L, O),
+  N is O + 1.
+phi(M, [H|L], N) :-
+  \+ coprime(M, H),
+  phi(M, L, N).
+
+
+
 :- begin_tests(prop_logic).
 
 test(is_atomic_expr,[nondet]) :-
