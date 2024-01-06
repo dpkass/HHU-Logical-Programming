@@ -1,6 +1,38 @@
 :- use_module(library(plunit)).
 
-%% mypermutation(+L, -P).
+% ------------------ Task 2 ------------------
+% Find the most general unificator (mgu) σ for each of the following pairs of terms if they can
+% be unified. Do not use a Prolog interpreter to solve the tasks. It is sufficient to state the
+% results for σ.
+
+% a) [] and []
+% σ = {}
+
+% b) [H|T] and [1,2,[3]]
+% σ = {H/1, T/[2,[3]]
+
+% c) [X,Y] and [c|[[a,b]]]
+% σ = {X/c, Y/[a,b]}
+
+% d) 2 and 1+1
+% not unifiable: different functions
+
+% e) r(a,X) and r(Y,r(a,b))
+% σ = {Y/a, X/r(a,b)}
+
+% f) f(X,Y) and f(Y,f(X))
+% not unifiable with occurs, else: σ = {X/f(X), Y/f(X)}
+
+% g) n(a,b) and f(X,Y)
+% not unifiable: different functions
+
+% h) f(a,b) and f(X,X)
+% not unifiable: constant overlap
+
+% i) [1,2|E]-E and [X,Y,F|G]-[a,b,c]
+% σ = {X/1, Y/2, E/[a,b,c], F/a, G/[b,c]}
+
+
 
 :- begin_tests(permutations).
 
