@@ -33,3 +33,40 @@ false if x = z = sy
 | 1    | 0    | ((1 ∨ 0) ∧ 0 ∧ 1) |
 | 1    | 1    | ((1 ∨ 1) ∧ 0 ∧ 0) |
 all equal 0
+
+
+
+------------------ Task 4 ------------------
+Define the following statements in predicate logic:
+1. For all humans it applies: If they lie in the sun for too long and don’t use sunscreen, they get
+sunburn.
+2. All children are humans.
+3. Billy is a child.
+4. Billy has been in the sun too long and doesn’t use sunscreen.
+
+1. ∀X : human(X) ∧ sun_too_long(X) ∧ ¬used_sunscreen(X) ⇒ sunburn(X)
+2. ∀X : child(X) ⇒ human(X)
+3. child(billy)
+4a. sun_too_long(billy)
+4b. ¬used_sunscreen(billy)
+
+Note: You can use abbreviations for the predicate names.
+Prove by contradiction and resolution that Billy gets sunburn. Specify the most general unificator
+for each resolution step
+
+5. ¬sunburn(billy) (negated query)
+
+6. := 2 ∧ 3 ⇒ human(billy)
+mgu = {X/billy}
+
+7. := 1 ∧ 5 ⇒ ¬human(billy) ∧ ¬sun_too_long(billy) ∧ used_sunscreen(billy)
+mgu = {X/billy}
+
+8. := 4a ∧ 7 ⇒ ¬human(billy) ∧ used_sunscreen(billy)
+mgu = {}
+
+9. := 4b ∧ 7 ⇒ ¬human(billy)
+mgu = {}
+
+10. := 6 ∧ 9 ⇒ 0
+mgu = {}
