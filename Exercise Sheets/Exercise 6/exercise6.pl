@@ -34,6 +34,29 @@
 
 
 
+% ------------------ Task 3 ------------------
+% Decide for each pair of substitutions (unificators) which substitution is more general.
+
+% Use the following definition: The substitution Θ is more general than Φ if there exists σ such
+% that Φ = Θσ.
+
+% a) {X/a} and {X/a,Y/a}
+% Left
+
+% b) {X/Y} and {X/a,Y/a}
+% Left
+
+% c) {X/Y,Z/a} and {X/a,Y/a,Z/a}
+% Left
+
+% d) {X/1,Y/Z} and {X/1,Y/2,Z/3}
+% Not equal
+
+% e) {X/a} and {X/b}
+% Not equal
+
+
+
 :- begin_tests(permutations).
 
 test(perm1) :-
