@@ -1,0 +1,9 @@
+------------------ Task 2 ------------------
+Transform the following predicate to conjunctive normalform.
+∀n : (n ∈ N ⇒ (∃m : m ∈ N ∧ m > n))   | remove implications
+∀n : (n ∉ N ∨ (∃m : m ∈ N ∧ m > n))   | add skolem: f(n) := m (must be function, since m is dependent on m
+∀n : (n ∉ N ∨ (f(n) ∈ N ∧ f(n) > n))  | distributive law
+∀n : (n ∉ N ∨ f(n) ∈ N) ∧ (n ∉ N ∨ f(n) > n); f(n) := m
+==> {{n ∉ N, f(n) ∈ N}, {n ∉ N, f(n) > n}}
+
+
