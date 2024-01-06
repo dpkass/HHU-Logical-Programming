@@ -73,6 +73,23 @@ insert(L, E, P) :-
 
 
 
+% ------------------ Task 5 ------------------
+% Implement a predicate drop(+L, +N, -NL) which drops every N-th element from L and returns the
+% resulting list in NL.
+
+drop(L, N, NL) :- drop(L, 1, N, NL).
+
+drop([], _, _, []).
+drop([_|L], P, N, NL) :- % why did drop([_|L], N, N, NL) not work?
+  P = N,
+  drop(L, 1, N, NL).
+drop([H|L], P, N, [H|NL]) :-
+  P < N,
+  NewP is P + 1,
+  drop(L, NewP, N, NL).
+
+
+
 :- begin_tests(permutations).
 
 test(perm1) :-
