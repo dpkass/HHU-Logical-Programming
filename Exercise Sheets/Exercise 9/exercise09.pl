@@ -83,6 +83,28 @@ myinclude(F, [H|R], RF) :-
 
 
 
+% ------------------ Task 4 ------------------
+% Implement a predicate greater_nrs_only(+Nr, +L, -NL) which removes all elements of L that are
+% not a number greater than Nr.
+
+greater_nrs_only(_, [], []). % base case for both.
+
+% TO TEST COMMENT OUT ONE OF THEM
+
+% a) implement greater_nrs_only(+Nr, +L, -NL) by iterating over the list
+%greater_nrs_only(Nr, [H|R], [H|NR]) :-
+%  number(H),
+%  H > Nr,
+%  greater_nrs_only(Nr, R, NR).
+%greater_nrs_only(Nr, [H|R], NR) :-
+%  (\+ number(H) -> true; H =< Nr),
+%  greater_nrs_only(Nr, R, NR).
+
+% b) implement greater_nrs_only(+Nr, +L, -NL) by using include/3 from the prior exercise
+
+lt(A, B) :- number(A), number(B), A < B.
+greater_nrs_only(Nr, L, NL) :- include(lt(Nr), L, NL).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % used for the "higher_order" tests
 even(X) :- X mod 2 =:= 0.
