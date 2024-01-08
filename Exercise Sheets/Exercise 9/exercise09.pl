@@ -1,5 +1,34 @@
 :- use_module(library(plunit)).
 
+% ------------------ Task 2 ------------------
+
+% a) Implement a predicate mymaplist/3 which behaves like the corresponding implementation in
+% SWI-Prolog (see maplist/3).
+
+% mymaplist/3 receives a predicate in the first argument, a list in the second argument, and
+% returns a new list in the third argument which contains all elements after applying the
+% predicate to the list’s elements.
+
+mymaplist(_, [], []).
+mymaplist(F, [H|R], [HM|RM]) :-
+  call(F, H, HM),
+  mymaplist(F, R, RM).
+
+
+% b) Implement a predicate myinclude/3 which receives a predicate in the first argument and a
+% list in the second argument. In the third argument, the predicate should return a new list of all
+% elements of the list provided in the second argument for which the predicate is true. The order
+% of elements should be kept.
+
+myinclude(_, [], []).
+myinclude(F, [H|R], [H|RF]) :-
+  call(F, H),
+  myinclude(F, R, RF).
+myinclude(F, [H|R], RF) :-
+  \+ call(F, H),
+  myinclude(F, R, RF).
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % used for the "higher_order" tests
 even(X) :- X mod 2 =:= 0.
