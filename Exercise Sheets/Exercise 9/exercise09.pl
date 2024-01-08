@@ -29,6 +29,60 @@ myinclude(F, [H|R], RF) :-
   myinclude(F, R, RF).
 
 
+
+% ------------------ Task 3 ------------------
+% The following figure shows a directed graph with weighted edges describing the actual costs
+% between two nodes.
+% The heuristic function h is defined as follows:
+% | x | h(x) |
+% |---|------|
+% | A | 22   |
+% | B | 20   |
+% | C | 3    |
+% | D | 14   |
+% | E | 9    |
+% | F | 1    |
+% | G | 32   |
+% | H | 2    |
+% | I | 0    |
+% Find the shortest path from the node A to the node I by applying the A* algorithm.
+% State all computed f-values and the queue in each step.
+
+% Initial:
+% q = [(22,A)]
+
+% visit A:
+% | x | g(p) | c(p,x) | h(x) | f(x) |
+% |---|------|--------|------|------|
+% | B | 0    | 10     | 20   | 30   |
+% | C | 0    | 15     | 3    | 18   |
+% => q = [(18,C),(30,B)]
+
+% visit C:
+% | x | g(p) | c(p,x) | h(x) | f(x) |
+% |---|------|--------|------|------|
+% | F | 15   | 7      | 1    | 23   |
+% | G | 15   | 11     | 32   | 58   |
+% | H | 15   | 2      | 2    | 19   |
+% => q = [(19,H),(23,F),(30,B),(58,G)]
+
+% visit H:
+% | x | g(p) | c(p,x) | h(x) | f(x) |
+% |---|------|--------|------|------|
+% | F | 17   | 1      | 1    | 19   |
+% | I | 17   | 14     | 0    | 31   |
+% => q = [(19,F),(30,B),(31,I),(58,G)]
+
+% visit F:
+% | x | g(p) | c(p,x) | h(x) | f(x) |
+% |---|------|--------|------|------|
+% | I | 18   | 4      | 0    | 22   |
+% => q = [(22,I),(30,B),(58,G)]
+
+% done, backtracking we get: I <- F <- H <- C <- A
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % used for the "higher_order" tests
 even(X) :- X mod 2 =:= 0.
