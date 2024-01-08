@@ -84,6 +84,7 @@ set_field(c(R1, R2, R3, R4), (X, 3), Symbol, c(R1, R2, R3, NewR4)) :-
 replace_at([], Symbol, _, [Symbol]).
 replace_at([_|T], Symbol, 0, [Symbol|T]).
 replace_at([H|T], Symbol, Pos, [H|NewT]) :-
+    Pos > 0,
     NewPos is Pos - 1,
     replace_at(T, Symbol, NewPos, NewT).
 
