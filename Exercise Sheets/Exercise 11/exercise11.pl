@@ -1,6 +1,17 @@
 :- use_module(library(plunit)).
 
+% ------------------ Task 3 ------------------
+% Predicates can be dynamically added to the knowledge base using asserta/1 (insert top) or
+% assertz/1 (insert bottom). Dynamic predicates can be removed using retract/1 or retractall/1.
+% • Check the behavior of asserta/1 and retract/1 when backtracking.
+% • Implement the predicates btasserta/1 and btretract/1 which behave like asserta/1 and
+%   retract/1 but revert their effect when backtracking.
 
+btasserta(A) :- asserta(A).
+btasserta(A) :- retract(A), fail. % Force backtracking
+
+btretract(A) :- retract(A).
+btretract(A) :- asserta(A), fail.
 
 :- begin_tests(mysum).
 
