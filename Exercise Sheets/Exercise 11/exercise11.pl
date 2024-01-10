@@ -24,6 +24,15 @@ mysum([H|T], Acc, S) :- NAcc is Acc + H, mysum(T, NAcc, S).
 
 
 
+% ------------------ Task 4 ------------------
+
+reduce(P, [H|T], Res) :- reduce(P, H, T, Res).
+
+reduce(_, Res, [], Res).
+reduce(P, Acc, [H|T], Res) :- call(P, Acc, H, NAcc), reduce(P, NAcc, T, Res).
+
+
+
 :- begin_tests(mysum).
 
 test(sum1, [true(S == 0)]) :-
