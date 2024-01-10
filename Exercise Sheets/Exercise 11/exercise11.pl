@@ -13,6 +13,17 @@ btasserta(A) :- retract(A), fail. % Force backtracking
 btretract(A) :- retract(A).
 btretract(A) :- asserta(A), fail.
 
+
+
+% ------------------ Task 3 ------------------
+
+mysum(L, Sum) :- mysum(L, 0, Sum).
+
+mysum([], Acc, Acc).
+mysum([H|T], Acc, S) :- NAcc is Acc + H, mysum(T, NAcc, S).
+
+
+
 :- begin_tests(mysum).
 
 test(sum1, [true(S == 0)]) :-
