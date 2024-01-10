@@ -1,4 +1,5 @@
 :- use_module(library(plunit)).
+:- use_module(library(lists)).
 
 % ------------------ Task 3 ------------------
 % Predicates can be dynamically added to the knowledge base using asserta/1 (insert top) or
@@ -32,6 +33,32 @@ reduce(_, Res, [], Res).
 reduce(P, Acc, [H|T], Res) :- call(P, Acc, H, NAcc), reduce(P, NAcc, T, Res).
 
 
+
+% ------------------ Task 5 ------------------
+
+%interleave(L, Res) :-
+%  maplist(length, L, Lens),
+%  min_member(Len, Lens),
+%  interleave(L, Len, [], Res).
+%
+%interleave(_, 0, Res, Res).
+%interleave(L, Len, Acc, Res) :-
+%  maplist(nth1(Len), L, Nth),
+%  append(Nth, Acc, NAcc),
+%  NLen is Len - 1,
+%  interleave_(L, NLen, NAcc, Res).
+
+% alternative
+% I didn't find an alternative for [A|B] at first, so I simply defined my own predicate.
+
+head_tail([H|T], H, T).
+
+interleave([], []).
+interleave(L, Res) :-
+  maplist(head_tail, L, Hs, Ts),
+  append(Hs, Rest, Res),
+  interleave(Ts, Rest), !;
+  Res = [].
 
 :- begin_tests(mysum).
 
