@@ -43,8 +43,36 @@ and_pairs(A, [H|T], [and(A, H)|NT]) :- and_pairs(A, T, NT).
 
 
 %% to_cnf(+Formula, -CNF).
-to_cnf(_Formula, _CNF) :-
-    true.
+to_cnf(F, LLCNF) :-
+  normalise(F, NF),
+  conjuctive_normalise(NF, CNF),
+  split_conjunctions([CNF], [LCNF]),
+  split_disjunctions(LCNF, LLCNF).
+
+% Double Negation
+conjuctive_normalise(not(not(A)), NA) :- !, conjuctive_normalise(A, NA).
+
+% DeMorgan
+conjuctive_normalise(not(and(A, B)), or(NA, NB)) :-
+  conjuctive_normalise(not(A), NA),
+  conjuctive_normalise(not(B), NB).
+conjuctive_normalise(not(or(A, B)), and(NA, NB)) :-
+  conjuctive_normalise(not(A), NA),
+  conjuctive_normalise(not(B), NB).
+
+% Distributive
+conjuctive_normalise(or(A, and(B, C)), and(or(NA, NB), or(NA, NC))) :-
+  conjuctive_normalise(A, NA), conjuctive_normalise(B, NB), conjuctive_normalise(C, NC), !.
+conjuctive_normalise(or(and(B, C), A), and(or(NA, NB), or(NA, NC))) :-
+  conjuctive_normalise(A, NA), conjuctive_normalise(B, NB), conjuctive_normalise(C, NC), !.
+
+% Default
+conjuctive_normalise(lit(A), A).
+conjuctive_normalise(not(A), not(NA)) :- conjuctive_normalise(A, NA).
+conjuctive_normalise(and(A, B), and(NA, NB)) :- conjuctive_normalise(A, NA), conjuctive_normalise(B, NB).
+conjuctive_normalise(or(A, B), or(NA, NB)) :- conjuctive_normalise(A, NA), conjuctive_normalise(B, NB).
+
+
 
 %% solve(+CNF).
 solve(_CNF) :-
