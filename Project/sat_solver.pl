@@ -72,6 +72,27 @@ conjuctive_normalise(not(A), not(NA)) :- conjuctive_normalise(A, NA).
 conjuctive_normalise(and(A, B), and(NA, NB)) :- conjuctive_normalise(A, NA), conjuctive_normalise(B, NB).
 conjuctive_normalise(or(A, B), or(NA, NB)) :- conjuctive_normalise(A, NA), conjuctive_normalise(B, NB).
 
+%% CNF to List Splitters
+split_conjunctions(L, Res) :-
+  maplist(split_conjunction, L, Res).
+
+split_conjunction(P, [P]) :- var(P), !.
+split_conjunction(and(A, B), LCNF) :-
+  split_conjunction(A, LA),
+  split_conjunction(B, LB),
+  append(LA, LB, LCNF), !.
+split_conjunction(P, [P]).
+
+split_disjunctions(L, Res) :-
+  maplist(split_disjunction, L, Res).
+
+split_disjunction(P, [P]) :- var(P), !.
+split_disjunction(or(A, B), LCNF) :-
+  split_disjunction(A, LA),
+  split_disjunction(B, LB),
+  append(LA, LB, LCNF), !.
+split_disjunction(P, [P]).
+
 
 
 %% solve(+CNF).
