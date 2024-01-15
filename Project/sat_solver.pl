@@ -1,4 +1,5 @@
 :- module(sat_solver,[normalise/2, to_cnf/2, solve/1]).
+:- use_module(library(lists)).
 
 :- load_test_files([]).
 
@@ -45,32 +46,32 @@ and_pairs(A, [H|T], [and(A, H)|NT]) :- and_pairs(A, T, NT).
 %% to_cnf(+Formula, -CNF).
 to_cnf(F, LLCNF) :-
   normalise(F, NF),
-  conjuctive_normalise(NF, CNF),
+  conjunctive_normalise(NF, CNF),
   split_conjunctions([CNF], [LCNF]),
   split_disjunctions(LCNF, LLCNF).
 
 % Double Negation
-conjuctive_normalise(not(not(A)), NA) :- !, conjuctive_normalise(A, NA).
+conjunctive_normalise(not(not(A)), NA) :- !, conjunctive_normalise(A, NA).
 
 % DeMorgan
-conjuctive_normalise(not(and(A, B)), or(NA, NB)) :-
-  conjuctive_normalise(not(A), NA),
-  conjuctive_normalise(not(B), NB).
-conjuctive_normalise(not(or(A, B)), and(NA, NB)) :-
-  conjuctive_normalise(not(A), NA),
-  conjuctive_normalise(not(B), NB).
+conjunctive_normalise(not(and(A, B)), or(NA, NB)) :-
+  conjunctive_normalise(not(A), NA),
+  conjunctive_normalise(not(B), NB).
+conjunctive_normalise(not(or(A, B)), and(NA, NB)) :-
+  conjunctive_normalise(not(A), NA),
+  conjunctive_normalise(not(B), NB).
 
 % Distributive
-conjuctive_normalise(or(A, and(B, C)), and(or(NA, NB), or(NA, NC))) :-
-  conjuctive_normalise(A, NA), conjuctive_normalise(B, NB), conjuctive_normalise(C, NC), !.
-conjuctive_normalise(or(and(B, C), A), and(or(NA, NB), or(NA, NC))) :-
-  conjuctive_normalise(A, NA), conjuctive_normalise(B, NB), conjuctive_normalise(C, NC), !.
+conjunctive_normalise(or(A, and(B, C)), and(or(NA, NB), or(NA, NC))) :-
+  conjunctive_normalise(A, NA), conjunctive_normalise(B, NB), conjunctive_normalise(C, NC), !.
+conjunctive_normalise(or(and(B, C), A), and(or(NA, NB), or(NA, NC))) :-
+  conjunctive_normalise(A, NA), conjunctive_normalise(B, NB), conjunctive_normalise(C, NC), !.
 
 % Default
-conjuctive_normalise(lit(A), A).
-conjuctive_normalise(not(A), not(NA)) :- conjuctive_normalise(A, NA).
-conjuctive_normalise(and(A, B), and(NA, NB)) :- conjuctive_normalise(A, NA), conjuctive_normalise(B, NB).
-conjuctive_normalise(or(A, B), or(NA, NB)) :- conjuctive_normalise(A, NA), conjuctive_normalise(B, NB).
+conjunctive_normalise(lit(A), A).
+conjunctive_normalise(not(A), not(NA)) :- conjunctive_normalise(A, NA).
+conjunctive_normalise(and(A, B), and(NA, NB)) :- conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
+conjunctive_normalise(or(A, B), or(NA, NB)) :- conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
 
 %% CNF to List Splitters
 split_conjunctions(L, Res) :-
@@ -96,5 +97,41 @@ split_disjunction(P, [P]).
 
 
 %% solve(+CNF).
-solve(_CNF) :-
-    true.
+solve(CNF) :-
+  simplify(CNF, Simplified),
+  dpll(Simplified).
+
+dpll([]).
+dpll(Clauses) :-
+  select([Lit], Clauses, CLausesWOUnit), !,
+  (var(Lit) -> Lit = true; Lit = not(false)),
+  simplify(CLausesWOUnit, NewClauses),
+  dpll(NewClauses).
+dpll(Clauses) :-
+  not(member([], Clauses)), % i didn't have nonmember pred
+  select_and_set(Clauses),
+  simplify(Clauses, NewClauses),
+  dpll(NewClauses).
+
+select_and_set([[true|_]|_]).
+select_and_set([[false|_]|_]).
+select_and_set([[Lit|_]|_]) :- nonvar(Lit), Lit = not(true).
+select_and_set([[Lit|_]|_]) :- nonvar(Lit), Lit = not(false).
+
+becomes_true(Clause) :- member_eq(true, Clause); member_eq(not(false), Clause).
+remove_falsey(Clause, Clause2) :-
+  delete_eq(Clause, false, Clause1),
+  delete_eq(Clause1, not(true), Clause2).
+simplify(Clauses, NewClauses) :-
+  exclude(becomes_true, Clauses, NoTrueClauses),
+  maplist(remove_falsey, NoTrueClauses, NewClauses).
+
+
+%% helpers
+delete_eq([], _, []) :- !.
+delete_eq([H|T], E, R) :- H == E, delete_eq(T, E, R).
+delete_eq([H|T], E, [H|R]) :- H \== E, delete_eq(T, E, R).
+
+member_eq(_, []) :- fail.
+member_eq(E, [H|_]) :- E == H, !.
+member_eq(E, [_|T]) :- member_eq(E, T).
