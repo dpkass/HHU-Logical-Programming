@@ -45,22 +45,19 @@ and_pairs(A, [H|T], [and(A, H)|NT]) :- and_pairs(A, T, NT).
 
 
 %% to_cnf(+Formula, -CNF).
-to_cnf(F, LLCNF) :-
+to_cnf(F, Clauses) :-
   normalise(F, NF),
   conjunctive_normalise(NF, CNF),
   split_conjunctions([CNF], [LCNF]),
-  split_disjunctions(LCNF, LLCNF).
+  split_disjunctions(LCNF, LLCNF),
+  maplist(unpack_lits, LLCNF, Clauses).
 
 % Double Negation
 conjunctive_normalise(not(not(A)), NA) :- !, conjunctive_normalise(A, NA).
 
 % DeMorgan
-conjunctive_normalise(not(and(A, B)), or(NA, NB)) :- !,
-  conjunctive_normalise(not(A), NA),
-  conjunctive_normalise(not(B), NB).
-conjunctive_normalise(not(or(A, B)), and(NA, NB)) :- !,
-  conjunctive_normalise(not(A), NA),
-  conjunctive_normalise(not(B), NB).
+conjunctive_normalise(not(and(A, B)), P) :- !, conjunctive_normalise(or(not(A), not(B)), P).
+conjunctive_normalise(not(or(A, B)), P) :- !, conjunctive_normalise(and(not(A), not(B)), P).
 
 % Distributive
 conjunctive_normalise(or(A, and(B, C)), P) :-
@@ -68,11 +65,18 @@ conjunctive_normalise(or(A, and(B, C)), P) :-
 conjunctive_normalise(or(and(B, C), A), P) :-
   !, conjunctive_normalise(and(or(A, B), or(A, C)), P).
 
+% Redistribute
+conjunctive_normalise(or(A, B), P) :-
+  !, conjunctive_normalise(A, NA), conjunctive_normalise(B, NB),
+  ((NA = and(_, _); NB = and(_, _)) ->
+  conjunctive_normalise(or(NA, NB), P);
+  P = or(NA, NB)).
+
 % Default
-conjunctive_normalise(lit(A), A).
-conjunctive_normalise(not(lit(A)), not(A)).
-conjunctive_normalise(and(A, B), and(NA, NB)) :- conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
-conjunctive_normalise(or(A, B), or(NA, NB)) :- conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
+conjunctive_normalise(lit(A), lit(A)).
+conjunctive_normalise(not(lit(A)), not(lit(A))).
+conjunctive_normalise(and(A, B), and(NA, NB)) :-
+  conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
 
 %% CNF to List Splitters
 split_conjunctions(L, Res) :-
@@ -95,7 +99,9 @@ split_disjunction(or(A, B), LCNF) :-
   append(LA, LB, LCNF), !.
 split_disjunction(P, [P]).
 
-
+unpack_lits(Clause, LitLessClause) :- maplist(unpack_lit, Clause, LitLessClause).
+unpack_lit(lit(A), A).
+unpack_lit(not(lit(A)), not(A)).
 
 %% solve(+CNF).
 solve(CNF) :-
