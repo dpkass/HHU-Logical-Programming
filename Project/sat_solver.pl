@@ -22,6 +22,7 @@ normalise(or(A, B), or(NA, NB)) :-
 
 normalise(not(A), not(NA)) :- normalise(A, NA).
 
+normalise(exactly_one_pos([Lit]), Lit).
 normalise(exactly_one_pos(L), and(Min1, not(Min2))) :-
   normalise(min_one_pos(L), Min1),
   normalise(min_two_pos(L),  Min2).
