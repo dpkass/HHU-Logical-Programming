@@ -55,22 +55,22 @@ to_cnf(F, LLCNF) :-
 conjunctive_normalise(not(not(A)), NA) :- !, conjunctive_normalise(A, NA).
 
 % DeMorgan
-conjunctive_normalise(not(and(A, B)), or(NA, NB)) :-
+conjunctive_normalise(not(and(A, B)), or(NA, NB)) :- !,
   conjunctive_normalise(not(A), NA),
   conjunctive_normalise(not(B), NB).
-conjunctive_normalise(not(or(A, B)), and(NA, NB)) :-
+conjunctive_normalise(not(or(A, B)), and(NA, NB)) :- !,
   conjunctive_normalise(not(A), NA),
   conjunctive_normalise(not(B), NB).
 
 % Distributive
-conjunctive_normalise(or(A, and(B, C)), and(or(NA, NB), or(NA, NC))) :-
-  conjunctive_normalise(A, NA), conjunctive_normalise(B, NB), conjunctive_normalise(C, NC), !.
-conjunctive_normalise(or(and(B, C), A), and(or(NA, NB), or(NA, NC))) :-
-  conjunctive_normalise(A, NA), conjunctive_normalise(B, NB), conjunctive_normalise(C, NC), !.
+conjunctive_normalise(or(A, and(B, C)), P) :-
+  !, conjunctive_normalise(and(or(A, B), or(A, C)), P).
+conjunctive_normalise(or(and(B, C), A), P) :-
+  !, conjunctive_normalise(and(or(A, B), or(A, C)), P).
 
 % Default
 conjunctive_normalise(lit(A), A).
-conjunctive_normalise(not(A), not(NA)) :- conjunctive_normalise(A, NA).
+conjunctive_normalise(not(lit(A)), not(A)).
 conjunctive_normalise(and(A, B), and(NA, NB)) :- conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
 conjunctive_normalise(or(A, B), or(NA, NB)) :- conjunctive_normalise(A, NA), conjunctive_normalise(B, NB).
 
