@@ -1,5 +1,28 @@
 :- use_module(library(plunit)).
 
+% Exercise 2 (Difference Lists)
+% As you have seen in the lecture, difference lists can improve performance of list operations.
+% In particular, we are able to add an element to the end of a difference list in constant time
+% while usual Prolog lists show linear time complexity for this operation. In general, you can
+% choose an arbitrary structure to store a difference list. A common representation uses the
+% functor -/2 such as [a,b|R]-R.
+
+% a) Implement a predicate toDL(+List, ?DiffList, ?Diff) which transforms a Prolog list into a
+% difference list. The first argument is the Prolog list and the second and third arguments
+% represent the difference list.
+
+toDL(L, DL, D) :- append(L, D, DL).
+
+% b) Implement a predicate dlconcat(+DL1, +DL2, -DLOut) which concatenates two difference lists
+% represented as X-Y.
+
+dlconcat(DL1-A, A-B, DL1-B).
+
+% c) Implement a predicate dlmember/2 which behaves as lists:member/2 but for difference lists.
+
+dlmember(_, L-R) :- L == R, !, false.
+dlmember(V, [H|T]-R) :- H = V; dlmember(V, T-R).
+
 :- begin_tests(to_dl).
 
 test(to_dl1, [nondet,true(X = [a,b,c|R])]) :-
