@@ -23,6 +23,22 @@ dlconcat(DL1-A, A-B, DL1-B).
 dlmember(_, L-R) :- L == R, !, false.
 dlmember(V, [H|T]-R) :- H = V; dlmember(V, T-R).
 
+
+
+% Exercise 3 (Definite Clause Grammars (DCGs))
+% Implement a (dcg-)parser which is able to detect if a term is correctly bracketed. If this is
+% the case, the amount of bracket pairs should be counted.
+
+dynamic(parse_pars).
+
+parse_pars(S, N) :- string_codes(S, T), parse_pars(N, T, []).
+
+parse_pars(0) --> "".
+parse_pars(N) --> "(", parse_pars(NN), ")", {N is NN + 1}.
+parse_pars(N) --> "{", parse_pars(NN), "}", {N is NN + 1}.
+parse_pars(N) --> "[", parse_pars(NN), "]", {N is NN + 1}.
+parse_pars(N) --> "<", parse_pars(NN), ">", {N is NN + 1}.
+
 :- begin_tests(to_dl).
 
 test(to_dl1, [nondet,true(X = [a,b,c|R])]) :-
