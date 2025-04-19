@@ -1,37 +1,114 @@
-# Logical Programming in Prolog
+# Logic Programming in Prolog
 
-## Introduction
+**Author:** Taha El Amine Kassabi  
+**Course:** Introduction to Logic Programming (WS 2023/24)  
+**Instructor:** Prof. Dr. Michael Leuschel  
+**University:** Heinrich Heine University Düsseldorf (HHU)
 
-This repository contains my solutions for the 'Introduction to Logical Programming' course at my university. It includes a series of exercises and a final project focused on building an SAT solver in Prolog. This solver takes propositional logic formulas, converts them to CNF (Conjunctive Normal Form), and finds all possible solutions using the DPLL (Davis-Putnam-Logemann-Loveland) Algorithm.
+---
 
-## Repository Structure
+## 📚 Overview
 
-The repository is organized into two main sections: Exercise Sheets and Project. Each exercise sheet folder contains the problem statement (PDF), Prolog code (.pl files), and solutions. The project folder contains the SAT solver implementation and related resources.
+This repository contains my solutions to **12 graded exercise sheets** and a **final SAT‑solver project** for the HHU course *Introduction to Logic
+Programming*.  
+Assignments span propositional logic, unification, SLD‑resolution, search algorithms, DCGs and CLP(FD).  
+The project implements a full **DPLL SAT solver** in SWI‑Prolog.
 
-### Exercise Sheets
-- Exercise 1-11: Each folder contains problem statements, Prolog scripts for the exercises, and 
-their respective solutions.
-### Project
-- SAT Solver: The final project, which includes the SAT solver implementation, a README with 
-instructions, and various resources and benchmarks for testing the solver.
+---
 
-# Commit History Highlights
+## 📂 Repository Structure
 
-The following are some key commits (tag and hash) in the project's development:
+```
+Exercise Sheets/
+└── Exercise 1 … 12/          # PDF task sheet, *.pl solution, optional images / docs
+    └── (e.g. Exercise 10 → Alpha‑Beta pruning & number‑scrabble bot)
 
-- sat (21e104a): Final project completion.
-- cnf (a4d9b55): Addition of CNF conversion functionality.
-- norm (14dbf35): Addition of normalization functionality.
-- ex_start (66b5c61) - ex_end (fceae09): Implementation of various logical programming  concepts 
-  and exercises, including higher-order predicates, alpha-beta pruning proof by contradiction in FOL, list manipulation, and more.
-# Installation and Usage
+Project/
+├── sat_solver.pl             # DPLL solver implementation
+├── dimacs_parser.pl          # Helper to read DIMACS CNF
+├── sat_benchmarks.pl         # Test harness
+├── sat_benchmarks/*.cnf      # CNF benchmarks (1.cnf … large_formula_example.cnf)
+└── project.pdf               # Project instructions
+```
 
-To use the solutions or the SAT solver:
+---
 
-Clone the repository to your local machine.
-Ensure you have a Prolog interpreter installed (e.g., SWI-Prolog).
-Navigate to the desired exercise or the project folder.
-Run the Prolog files using your Prolog interpreter.
-# Contributing
+## 🧠 Topics Covered
 
-While this repository mainly serves as a personal archive of my coursework, suggestions and improvements are welcome. Please feel free to fork the repository and submit pull requests.
+| Sheet | Core Topics & Skills                                                            |
+|-------|---------------------------------------------------------------------------------|
+| 01    | Prolog first steps, family facts, recursion                                     |
+| 02    | Knowledge bases, FOL translation, list utilities                                |
+| 03    | Resolution & DPLL basics, automata, SAT evaluation predicate                    |
+| 04    | Proof by contradiction, list compression, binary‑tree traversals, GCD & coprime |
+| 05    | CNF conversion, formula simplification, Euler φ, Horn/denial recognition        |
+| 06    | Unification algorithm, permutations, drop‑nth                                   |
+| 07    | CNF & resolution in FOL, logical proofs                                         |
+| 08    | SLD trees, iterative deepening (15‑Puzzle)                                      |
+| 09    | Higher‑order predicates, maplist/include, A* search                             |
+| 10    | Minimax & Alpha‑Beta pruning, number‑scrabble bot                               |
+| 11    | Proof strategies, advanced logic topics                                         |
+| 12    | Difference lists, DCGs (balanced brackets, Sudoku parser), CLP(FD) intro        |
+
+---
+
+## 🚀 SAT‑Solver Project
+
+*Transforms arbitrary propositional formulas into CNF and solves them via **DPLL** with unit‑propagation & backtracking.*
+
+```prolog
+?- [sat_solver].
+?- to_cnf(implies(lit(A), or(lit(B), not(lit(A)))), CNF).
+CNF = [[not(A), B], [not(A)]].
+?- solve(CNF).
+A = false ;
+B = true  ;
+false.
+```
+
+Run full benchmarks:
+
+```prolog
+?- run_benchmarks.
+```
+
+---
+
+## 💾 Setup
+
+Install SWI‑Prolog (≥ 8.2)
+
+```bash
+# linux
+sudo apt install swi-prolog 
+```
+
+```bash
+# macOS
+brew install swi-prolog
+```
+
+---
+
+## 🚀 Usage
+
+```prolog
+swipl
+?- ["Exercise Sheets/Exercise 4/exercise4_solution.pl"].
+?- run_tests.    % when unit tests are provided
+```
+
+Project usage:
+
+```prolog
+?- ["Project/sat_solver.pl"].
+?- solve([[not(A), B], [A, not(B)]]).
+```
+
+---
+
+## 📝 Notes
+
+* Solutions are written for **SWI‑Prolog** and follow idiomatic declarative style.
+* Each sheet folder contains both *task* & *solution* files for easy comparison.
+* Benchmarks demonstrate solver correctness; runtime optimisation was not graded.
